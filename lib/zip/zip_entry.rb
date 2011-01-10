@@ -477,7 +477,7 @@ module Zip
       elsif @filepath
         case @ftype
         when :file
-          return File.open(@filepath, "rb", &aProc)
+          return ::File.open(@filepath, "rb", &aProc)
 
         when :symlink
           linkpath = File::readlink(@filepath)
@@ -550,7 +550,7 @@ module Zip
     end
 
     def get_raw_input_stream(&aProc)
-      File.open(@zipfile, "rb", &aProc)
+      ::File.open(@zipfile, "rb", &aProc)
     end
 
     private
@@ -562,11 +562,11 @@ module Zip
     end
 
     def write_file(destPath, continueOnExistsProc = proc { false })
-      if File.exists?(destPath) && ! yield(self, destPath)
+      if ::File.exists?(destPath) && ! yield(self, destPath)
 	raise ZipDestinationFileExistsError,
 	  "Destination '#{destPath}' already exists"
       end
-      File.open(destPath, "wb") do |os|
+      ::File.open(destPath, "wb") do |os|
         get_input_stream do |is|
           set_extra_attributes_on_path(destPath)
 
@@ -579,9 +579,9 @@ module Zip
     end
     
     def create_directory(destPath)
-      if File.directory? destPath
+      if ::File.directory? destPath
 	return
-      elsif File.exists? destPath
+      elsif ::File.exists? destPath
 	if block_given? && yield(self, destPath)
 	  FileUtils::rm_f destPath
 	else
