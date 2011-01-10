@@ -61,8 +61,8 @@ module Zip
       super()
       @name = fileName
       @comment = ""
-      if (File.exists?(fileName)) and !buffer
-	File.open(name, "rb") { |f| read_from_stream(f) }
+      if (::File.exists?(fileName)) and !buffer
+	::File.open(name, "rb") { |f| read_from_stream(f) }
       elsif (create)
 	@entrySet = ZipEntrySet.new
       else
@@ -258,7 +258,7 @@ module Zip
     private
 
     def is_directory(newEntry, srcPath)
-      srcPathIsDirectory = File.directory?(srcPath)
+      srcPathIsDirectory = ::File.directory?(srcPath)
       if newEntry.is_directory && ! srcPathIsDirectory
 	raise ArgumentError,
 	  "entry name '#{newEntry}' indicates directory entry, but "+
@@ -282,7 +282,7 @@ module Zip
     end
 
     def check_file(path)
-      unless File.readable? path
+      unless ::File.readable? path
 	raise Errno::ENOENT, path
       end
     end
